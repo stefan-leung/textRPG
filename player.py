@@ -38,12 +38,21 @@ class hero:
 		if self.hp <= 0:
 			self.hp = 0
 			print('You died')
-	
-	def spend(self, amount:int):
-		self.money -= amount
-		if self.hp < 0:
+
+	'''
+	class money:
+		def lose(self, amount:int):
+			self.money -= amount
+
+			if self.money < 0:
+				self.money += amount
+				print(color.red + 'You can\'t afford this item!' + color.stop)
+
+				return(False)
+
+			else:
+				return(True)
+		
+		def gain(self, amount:int):
 			self.money += amount
-			print(color.red + 'You can\'t afford this item!' + color.stop)
-	
-	def earn(self, amount:int):
-		self.money += amount
+	'''

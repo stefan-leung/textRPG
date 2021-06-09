@@ -1,5 +1,5 @@
 class color:
-	grey = '\003[90m'
+	grey = '\033[90m'
 	red = '\033[91m'
 	green = '\033[92m'
 	yellow = '\033[93m'
@@ -21,6 +21,11 @@ class color:
 
 	def cyanify(in_in):
 		return(color.cyan + str(in_in) + color.stop)
+	def greyify(in_in):
+		return(color.grey + str(in_in) + color.stop)
+	
+	def dialog(dialog):
+		return(color.yellow + '[' + str(dialog) + ']' + color.stop)
 
 class icons:
 	heart = '❤️ '
