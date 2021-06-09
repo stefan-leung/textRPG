@@ -30,12 +30,12 @@ ___<__(|) _   ""-/  / /   /
 	|/,-'
 	|'""")
 
-
 from text import color, icons
 from importing import main
 from player import *
 from npc import *
 
+c = money()
 
 main.debug()
 
@@ -109,5 +109,7 @@ print('Choose your class - ' + color.cyan + character.c.emoji + ' ' +character.c
 
 character.c.printstats()
 
+c.money = 1000
+
 town_store = shop(name="Town Store", merchants=["Merchant John"])
-town_store.open(character)
+town_store.open(character, money=c.money)

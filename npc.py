@@ -12,6 +12,28 @@ default_shop_items = [
 
 import random
 
+class money:
+	def __init__(self, coins:int=0):
+		self.money = coins
+
+	def lose(self, amount:int):
+		self.money -= amount
+
+		if self.money < 0:
+			self.money += amount
+			print(color.red + 'You can\'t afford this item!' + color.stop)
+
+			return(False)
+
+		else:
+			return(True)
+	
+	def gain(self, amount:int):
+		self.money += amount
+
+def merchant_talk(merchants:list, text:str):
+	print(color.dialog(random.choice(merchants)) + text)
+
 class shop:
 	def __init__(self, 
 			name:str=None, 
@@ -24,9 +46,9 @@ class shop:
 		self.merchants = merchants
 		self.tax = tax # Out of 100
 	
-	def open(self, user:hero=None):
+	def open(self, user:hero=None, money:int=None):
 		print(color.bold + color.underline + '\nWelcome to the ' + self.name + '!' + color.stop)
-		print(color.dialog(random.choice(self.merchants)) + ' Hello, ' + color.cyanify(user.name) + '! What would you like to buy today?')
+		merchant_talk(self.merchants, ' Hello, ' + color.cyanify(user.name) + '! What would you like to buy today?')
 
 		item_string = ''
 		for i in self.items:
@@ -36,24 +58,34 @@ class shop:
 		talking = True
 		
 		while talking:
-			print(color.dialog(random.choice(self.merchants)) + ' We have the following items in stock: ' + item_string)
+			merchant_talk(self.merchants, ' We have the following items in stock: ' + item_string + color.greyify(' (Exit)'))
 			userInput = input(main.inputtext)
 
-			done = False
-			for i in self.items:
-				if userInput.lower() == i.name.lower():
-					print(color.dialog(random.choice(self.merchants)) + ' You\'d like to buy ' + color.cyanify(i.name) + '? It will cost you ' + color.cyanify(i.price) + ' credits. ' + color.greyify('(Y/N)'))
+			if userInput.lower() == 'exit':
+				if len(self.merchants) > 1:
+					merchant_talk(self.merchants, ' Thanks for doing buisness with me!')
+				else:
+					merchant_talk(self.merchants, ' Thanks for doing buisness with us!')
+				
+				talking = False
 
-					userInput2 = input(main.inputtext)
+			else: 
+				for i in self.items:
+					if userInput.lower() == i.name.lower():
+						merchant_talk(self.merchants, ' You\'d like to buy ' + color.cyanify(i.name) + '? It will cost you ' + color.cyanify(i.price) + ' credits. ' + color.greyify('(Y/N)'))
 
-					if 'y' in userInput2.lower():
-						buy = True
-						user.money -= i.price
+						userInput2 = input(main.inputtext)
 
-						if user.money < 0:
-							user.money += i.price
-							print(color.red + 'You can\'t afford ' + color.cyanify(i.name) + '!' + color.stop)
-					
-					else:
-						print(color.dialog(random.choice(self.merchants)) + 'Okay...')
+						if 'y' in userInput2.lower():
+							money -= i.price
+
+							if money < 0:
+								money += i.price
+								print(color.red + 'You can\'t afford ' + color.cyanify(i.name) + '!' + color.stop)
+							
+							else:
+								merchant_talk(self.merchants, ' You bought 1 '  + color.cyanify(i.name) + '! Will that be all?')
+						
+						else:
+							merchant_talk(self.merchants, ' Okay...')
 				
