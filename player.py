@@ -18,15 +18,15 @@ class user_class:
 
 
 class hero:
-	def __init__(self, name:str=None, class_item:user_class=None, money:int=None):
+	def __init__(self, name:str=None, class_item:user_class=None):
 		self.name = name
+		self.money = 0
 		self.c = class_item
 		self.hp = class_item.basehp
 		self.maxhp = class_item.basehp
 		self.defense = class_item.basedef
 		self.dmg = class_item.basedmg
 		self.speed = class_item.basespd
-		self.money = money
 	
 	def heal(self, amount:int):
 		self.hp += amount

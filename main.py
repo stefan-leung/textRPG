@@ -95,11 +95,11 @@ print('Choose your class ' + color.greyify('(Warrior, Wizard, Goblin, Ranger, Sc
 userInput = input(main.inputtext)
 
 user_classes = {
-	"warrior": hero(name=userName, class_item=base_class.warrior, money=0),
-	"wizard": hero(name=userName,class_item=base_class.wizard, money=0),
-	"goblin": hero(name=userName, class_item=base_class.goblin, money=0),
-	"ranger": hero(name=userName, class_item=base_class.ranger, money=0),
-	"scout": hero(name=userName, class_item=base_class.scout, money=0)
+	"warrior": hero(name=userName, class_item=base_class.warrior),
+	"wizard": hero(name=userName,class_item=base_class.wizard),
+	"goblin": hero(name=userName, class_item=base_class.goblin),
+	"ranger": hero(name=userName, class_item=base_class.ranger),
+	"scout": hero(name=userName, class_item=base_class.scout)
 }
 
 character = user_classes[userInput.lower()]
