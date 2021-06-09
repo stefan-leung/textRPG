@@ -1,3 +1,5 @@
+print('Why are you running this? It doesn\'t do anything!')
+
 class color:
 	grey = '\033[90m'
 	red = '\033[91m'

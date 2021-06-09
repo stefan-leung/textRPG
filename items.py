@@ -1,3 +1,5 @@
+print('Why are you running this? It doesn\'t do anything!')
+
 from player import *
 
 class items:
