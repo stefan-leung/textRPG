@@ -1,4 +1,6 @@
-import sys, time
+import sys, time, random
+
+inventory = []
 
 class color:
 	grey = '\033[90m'
@@ -150,12 +152,9 @@ default_shop_items = [
 	items.weaponry.projectile.arrow
 ]
 
-import random
-
 class other:
-	def __init__(self, coins:int=0, inv:list=None):
+	def __init__(self, coins:int=0):
 		self.money = coins
-		self.inv = inv
 
 	def lose(self, amount:int):
 		self.money -= amount
@@ -185,20 +184,25 @@ class other:
 def merchant_talk(merchants:list, text:str):
 	print(color.dialog(random.choice(merchants)) + text)
 
+c = other()
+
 class shop:
 	def __init__(self, 
 			name:str=None, 
 			items:list=default_shop_items, 
 			merchants:list=["Bob"],
+			_inv:list=None,
 			tax:float=1.0):
-
+		
 		self.name = name
 		self.items = items
 		self.merchants = merchants
+		self.inv = _inv
 		self.tax = tax # Out of 100
 	
 	def open(self, user:hero=None, money:int=None):
 		print(color.bold + color.underline + '\nWelcome to the ' + self.name + '!' + color.stop)
+
 		merchant_talk(self.merchants, ' Hello, ' + color.cyanify(user.name) + '! What would you like to buy today?')
 
 		item_string = ''
@@ -210,6 +214,7 @@ class shop:
 		
 		while talking:
 			merchant_talk(self.merchants, ' We have the following items in stock: ' + item_string + color.greyify(' (Exit)'))
+			print(color.greyify('You have ') + color.cyanify(money) + color.greyify(' credits.'))
 			userInput = input(main.inputtext)
 
 			if userInput.lower() == 'exit':
@@ -236,6 +241,7 @@ class shop:
 							
 							else:
 								merchant_talk(self.merchants, ' You bought 1 '  + color.cyanify(i.name) + '! Will that be all?')
+								inventory.append(i)
 						
 						else:
 							merchant_talk(self.merchants, ' Okay...')
@@ -274,7 +280,6 @@ ___<__(|) _   ""-/  / /   /
 	|/,-'
 	|'""")
 
-c = other()
 
 main.debug()
 
@@ -347,7 +352,6 @@ main.up(2)
 print('Choose your class - ' + color.cyan + character.c.emoji + ' ' +character.c.name + color.stop + (' ' * 62))
 
 character.c.printstats()
-
 c.money = 1000
 
 town_store = shop(name="Town Store", merchants=["Merchant John"])
@@ -357,3 +361,5 @@ clothing_item = [items.clothing.leather.boots, items.clothing.leather.pants, ite
 
 clothes_shop = shop(name="Clothes Shop", items=clothing_item, merchants=["Leather Worker", "Merchant Bob"])
 clothes_shop.open(character, money=c.money)
+
+print(inventory)
