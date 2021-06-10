@@ -27,7 +27,7 @@ class color:
 		return(color.cyan + str(in_in) + color.stop)
 	def greyify(in_in):
 		return(color.grey + str(in_in) + color.stop)
-	
+
 	def dialog(dialog):
 		return(color.yellow + '[' + str(dialog) + ']' + color.stop)
 
@@ -45,7 +45,7 @@ class user_class:
 		self.basedmg = basedmg
 		self.basespd = basespd
 		self.emoji = emoji
-	
+
 	def printstats(self):
 		print(color.purple + self.name + '\'s Stats - ' + self.emoji + color.stop)
 		print(icons.heart + ' Base HP: ' + color.cyanify(self.basehp))
@@ -58,11 +58,11 @@ class main:
 	def up(amount: int = 1):
 		for i in range(0, amount):
 			sys.stdout.write("\033[F")
-			
+
 	def debug():
 		print(color.blue)
 		print("[Debugging Information]")
-		print('Current Time: ' + time.asctime() + ' ' + time.strftime("%z", time.gmtime())) 
+		print('Current Time: ' + time.asctime() + ' ' + time.strftime("%z", time.gmtime()))
 		print('Operating System: ' + sys.platform) 	# OS
 		print('Python Version: ' + sys.version)		# Python Version
 		print(color.stop)
@@ -76,12 +76,12 @@ class hero:
 		self.defense = class_item.basedef
 		self.dmg = class_item.basedmg
 		self.speed = class_item.basespd
-	
+
 	def heal(self, amount:int):
 		self.hp += amount
 		if self.hp > self.maxhp:
 			self.hp = self.maxhp
-	
+
 	def damage(self, amount:int):
 		self.hp -= amount
 		if self.hp <= 0:
@@ -110,17 +110,17 @@ class other:
 
 		else:
 			return(True)
-	
+
 	def gain(self, amount:int):
 		self.money += amount
-	
+
 	def invget(self, item:items=None):
 		self.inv.append(item)
-	
+
 	def invremove(self, item:items=None):
 		try:
 			self.inv.remove(item)
-		
+
 		except Exception as e:
 			print('What? There\'s been a problem!')
 
@@ -130,19 +130,19 @@ def merchant_talk(merchants:list, text:str):
 c = other()
 
 class shop:
-	def __init__(self, 
-			name:str=None, 
-			items:list=default_shop_items, 
+	def __init__(self,
+			name:str=None,
+			items:list=default_shop_items,
 			merchants:list=["Bob"],
 			_inv:list=None,
 			tax:float=1.0):
-		
+
 		self.name = name
 		self.items = items
 		self.merchants = merchants
 		self.inv = _inv
 		self.tax = tax # Out of 100
-	
+
 	def open(self, user:hero=None, money:int=None):
 		print(color.bold + color.underline + '\nWelcome to the ' + self.name + '!' + color.stop)
 
@@ -151,10 +151,10 @@ class shop:
 		item_string = ''
 		for i in self.items:
 			item_string += color.cyanify(i.name) + ', '
-		
+
 		item_string = item_string[:-2]
 		talking = True
-		
+
 		while talking:
 			merchant_talk(self.merchants, ' We have the following items in stock: ' + item_string + color.greyify(' (Exit)'))
 			print(color.greyify('You have ') + color.cyanify(money) + color.greyify(' credits.'))
@@ -165,10 +165,10 @@ class shop:
 					merchant_talk(self.merchants, ' Thanks for doing buisness with me!')
 				else:
 					merchant_talk(self.merchants, ' Thanks for doing buisness with us!')
-				
+
 				talking = False
 
-			else: 
+			else:
 				for i in self.items:
 					if userInput.lower() == i.name.lower():
 						merchant_talk(self.merchants, ' You\'d like to buy ' + color.cyanify(i.name) + '? It will cost you ' + color.cyanify(i.price) + ' credits. ' + color.greyify('(Y/N)'))
@@ -181,15 +181,17 @@ class shop:
 							if money < 0:
 								money += i.price
 								print(color.red + 'You can\'t afford ' + color.cyanify(i.name) + color.red + '!' + color.stop)
-							
+
 							else:
 								merchant_talk(self.merchants, ' You bought 1 '  + color.cyanify(i.name) + '! Will that be all?')
 								inventory.append(i)
-						
+
 						else:
 							merchant_talk(self.merchants, ' Okay...')
 
-
+class menu:
+	def __init__(self, user:hero):
+		self.user = user
 
 print('''
 							  	 ,-.
@@ -197,11 +199,11 @@ print('''
 							   / `-/
 							  /-. /
 							 /   )
-						    /   /  
+						    /   /
 			  _		       /-. /
 			 (_)"-._	  /   )
-			   "-._  "-'""( )/	
-				   "-/"-._" `. 
+			   "-._  "-'""( )/
+				   "-/"-._" `.
 					/	 "-.'._
 				   /\	   /-._"-._
       _,---...__  ./  ) _,-"/	"-(_)
@@ -214,10 +216,10 @@ ___<__(|) _   ""-/  / /   /
  [	(	/  / /   /  ,.---,_   `._   _,-','
   \	`-./  / /   /  /	   `-._  """ ,-'
    `-._  /  / /   /_,'			""--"
-	   "/  / /   /"		 
+	   "/  / /   /"
 	   /  / /   /
 	  /  / /   /	TextRPG
-	 /  |,'   /  
+	 /  |,'   /
 	:   /	/
 	[  /   ,'   Stefan Leung & Robin Eriksson
 	| /  ,'
@@ -227,45 +229,7 @@ ___<__(|) _   ""-/  / /   /
 
 main.debug()
 
-class user_class:
-	def __init__(self, name:str, basehp:int, basedef:int, basedmg:int, basespd:int, emoji:str):
-		self.name = name
-		self.basehp = basehp
-		self.basedef = basedef
-		self.basedmg = basedmg
-		self.basespd = basespd
-		self.emoji = emoji
-	
-	def printstats(self):
-		print(color.purple + self.name + '\'s Stats - ' + self.emoji + color.stop)
-		print(icons.heart + ' Base HP: ' + color.cyanify(self.basehp))
-		print(icons.shield + ' Base Defense: ' + color.cyanify(self.basedef))
-		print(icons.sword + ' Base Damage: ' + color.cyanify(self.basedmg))
-		print(icons.speed + ' Base Attack Speed: ' + color.cyanify(self.basespd))
 
-
-class hero:
-	def __init__(self, name:str, class_item:user_class):
-		self.name = name
-		self.c = class_item
-		self.hp = class_item.basehp
-		self.maxhp = class_item.basehp
-		self.defense = class_item.basedef
-		self.dmg = class_item.basedmg
-		self.speed = class_item.basespd
-	
-	def heal(self, amount:int):
-		self.hp += amount
-		if self.hp > self.maxhp:
-			self.hp = self.maxhp
-	
-	def damage(self, amount:int):
-		self.hp -= amount
-		if self.hp <= 0:
-			self.hp = 0
-			print('You died')
-
-	
 class base_class:
 	warrior = user_class(name="Warrior", basehp=100, basedef=75, basedmg=125, basespd=80, emoji='⚔️ ') # melee
 	wizard = user_class(name="Wizard", basehp=125, basedef=50, basedmg=110, basespd=100, emoji='✨ ') # support
