@@ -172,10 +172,10 @@ class other:
 	def gain(self, amount:int):
 		self.money += amount
 	
-	def get(self, item:items=None):
+	def invget(self, item:items=None):
 		self.inv.append(item)
 	
-	def remove(self, item:items=None):
+	def invremove(self, item:items=None):
 		try:
 			self.inv.remove(item)
 		
