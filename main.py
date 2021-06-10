@@ -34,6 +34,7 @@ from text import color, icons
 from importing import main
 from player import *
 from npc import *
+from items import items
 
 c = money()
 
@@ -113,3 +114,8 @@ c.money = 1000
 
 town_store = shop(name="Town Store", merchants=["Merchant John"])
 town_store.open(character, money=c.money)
+
+clothing_item = [items.clothing.leather.boots, items.clothing.leather.pants, items.clothing.leather.jacket]
+
+clothes_shop = shop(name="Clothes Shop", items=clothing_item, merchants=["Leather Worker", "Merchant Bob"])
+clothes_shop.open(character, money=c.money)

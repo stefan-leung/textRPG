@@ -1,5 +1,3 @@
-# print('Why are you running this? It doesn\'t do anything!')
-
 from player import hero
 from text import color
 from items import items
@@ -42,7 +40,7 @@ class shop:
 			tax:float=1.0):
 
 		self.name = name
-		self.items = default_shop_items
+		self.items = items
 		self.merchants = merchants
 		self.tax = tax # Out of 100
 	
@@ -62,7 +60,7 @@ class shop:
 			userInput = input(main.inputtext)
 
 			if userInput.lower() == 'exit':
-				if len(self.merchants) > 1:
+				if len(self.merchants) <= 1:
 					merchant_talk(self.merchants, ' Thanks for doing buisness with me!')
 				else:
 					merchant_talk(self.merchants, ' Thanks for doing buisness with us!')
