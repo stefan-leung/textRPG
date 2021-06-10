@@ -114,16 +114,6 @@ class other:
 	def gain(self, amount:int):
 		self.money += amount
 
-	def invget(self, item:items=None):
-		self.inv.append(item)
-
-	def invremove(self, item:items=None):
-		try:
-			self.inv.remove(item)
-
-		except Exception as e:
-			print('What? There\'s been a problem!')
-
 def merchant_talk(merchants:list, text:str):
 	print(color.dialog(random.choice(merchants)) + text)
 
@@ -190,8 +180,9 @@ class shop:
 							merchant_talk(self.merchants, ' Okay...')
 
 class menu:
-	def __init__(self, user:hero):
+	def __init__(self, user:hero, menus:list):
 		self.user = user
+		self.menus = menus
 
 print('''
 							  	 ,-.
