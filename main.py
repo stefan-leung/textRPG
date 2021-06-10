@@ -180,7 +180,7 @@ class shop:
 
 							if money < 0:
 								money += i.price
-								print(color.red + 'You can\'t afford ' + color.cyanify(i.name) + '!' + color.stop)
+								print(color.red + 'You can\'t afford ' + color.cyanify(i.name) + color.red + '!' + color.stop)
 							
 							else:
 								merchant_talk(self.merchants, ' You bought 1 '  + color.cyanify(i.name) + '! Will that be all?')
