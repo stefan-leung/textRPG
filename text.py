@@ -1,4 +1,4 @@
-print('Why are you running this? It doesn\'t do anything!')
+# print('Why are you running this? It doesn\'t do anything!')
 
 class color:
 	grey = '\033[90m'

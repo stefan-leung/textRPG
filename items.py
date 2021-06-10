@@ -1,9 +1,8 @@
-print('Why are you running this? It doesn\'t do anything!')
+# print('Why are you running this? It doesn\'t do anything!')
 
 from player import *
 
 class items:
-
 	class potion:
 		class small_health_potion:
 			name = "Small Health Potion"
