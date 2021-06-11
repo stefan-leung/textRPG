@@ -179,10 +179,26 @@ class shop:
 						else:
 							merchant_talk(self.merchants, ' Okay...')
 
+
+
+
 class menu:
-	def __init__(self, user:hero, menus:list):
+	def __init__(self, user:hero):
 		self.user = user
-		self.menus = menus
+	
+	def open(self, location:str='Undefined', near:list=None, first:bool=False):
+		a = ''
+		for i in near:
+			a += color.cyanify(i.name) + ', '
+		
+		if first:
+			print(color.bold + color.underline + '\nWelcome to '  + color.cyanify(location) + color.bold + color.underline + ', ' + color.cyanify(self.user.name + ' the ' + self.user.c.name) + color.bold + color.underline + '!' + color.stop)
+			print('You can go into ' + a[:-2] + '. ' + color.greyify('(Save, Inventory, Purse)'))
+
+		else:
+			print('\nYou are at ' + color.cyanify(location) + '. You can go into ' + a[:-2] + '. ' + color.greyify('(Save, Inventory, Purse)'))
+
+
 
 print('''
 							  	 ,-.
@@ -246,6 +262,7 @@ user_classes = {
 }
 
 character = user_classes[userInput.lower()]
+mainmenu = menu(user=character)
 
 main.up(2)
 print('Choose your class - ' + color.cyan + character.c.emoji + ' ' +character.c.name + color.stop + (' ' * 62))
@@ -253,12 +270,12 @@ print('Choose your class - ' + color.cyan + character.c.emoji + ' ' +character.c
 character.c.printstats()
 c.money = 1000
 
-town_store = shop(name="Town Store", merchants=["Merchant John"])
-town_store.open(character, money=c.money)
 
-clothing_item = [items.clothing.leather.boots, items.clothing.leather.pants, items.clothing.leather.jacket]
+_town_store = shop(name="Town Store", merchants=["Merchant John"])
+# _town_store.open(character, money=c.money)
 
-clothes_shop = shop(name="Clothes Shop", items=clothing_item, merchants=["Leather Worker", "Merchant Bob"])
-clothes_shop.open(character, money=c.money)
+clothing_item = [items.clothing.leather.jacket, items.clothing.leather.pants, items.clothing.leather.boots]
+_clothes_shop = shop(name="Clothes Shop", items=clothing_item, merchants=["Leather Worker", "Merchant Bob"])
+# _clothes_shop.open(character, money=c.money)
 
-print(inventory)
+mainmenu.open(location='Little Town', near=[_town_store, _clothes_shop], first=True)
