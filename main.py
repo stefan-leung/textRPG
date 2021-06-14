@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import sys, time, random
 
 inventory = []
@@ -197,6 +199,20 @@ class menu:
 
 		else:
 			print('\nYou are at ' + color.cyanify(location) + '. You can go into ' + a[:-2] + '. ' + color.greyify('(Save, Inventory, Purse)'))
+	
+		toGo = input(main.inputtext)
+		if toGo.lower() in ['save', 'inv', 'purse']:
+			if toGo.lower() == 'save':
+				print('Coming Soon™')
+			elif toGo.lower() == 'inv':
+				print('Inventory?')
+			elif toGo.lower() == 'purse':
+				print('Money?')
+
+		else:
+			for i in near:
+				if toGo.lower() == i.name.lower():
+					print('OK SURE GO INTO ' + i.name.upper())
 
 
 
@@ -242,10 +258,10 @@ class base_class:
 	wizard = user_class(name="Wizard", basehp=125, basedef=50, basedmg=110, basespd=100, emoji='✨ ') # support
 	goblin = user_class(name="Goblin", basehp=75, basedef=25, basedmg=150, basespd=110, emoji='👺 ') # brute force
 	ranger = user_class(name="Ranger", basehp=75, basedef =35, basedmg=125, basespd=115, emoji='🏹 ') # ranged
-	scout = user_class(name= "Scout", basehp=70, basedef=30, basedmg=125, basespd=125, emoji='👟') # stealth
+	scout = user_class(name="Scout", basehp=70, basedef=30, basedmg=125, basespd=125, emoji='👟') # stealth
 
 
-print('Choose your name.')
+print('Choose your name')
 userName = input(main.inputtext)
 
 main.up(2)
