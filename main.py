@@ -2,7 +2,7 @@ import sys, time, random
 
 inventory = []
 
-class color:
+class text:
 	grey = '\033[90m'
 	red = '\033[91m'
 	green = '\033[92m'
@@ -24,12 +24,26 @@ class color:
 	cyanbg = '\033[106m'
 
 	def cyanify(in_in):
-		return(color.cyan + str(in_in) + color.stop)
+		return(text.cyan + str(in_in) + text.stop)
 	def greyify(in_in):
-		return(color.grey + str(in_in) + color.stop)
+		return(text.grey + str(in_in) + text.stop)
 
 	def dialog(dialog):
-		return(color.yellow + '[' + str(dialog) + ']' + color.stop)
+		return(text.yellow + '[' + str(dialog) + ']' + text.stop)
+	
+	inputtext = stop + bold + '> ' + stop
+
+	def up(amount: int = 1):
+		for i in range(0, amount):
+			sys.stdout.write("\033[F")
+
+	def debug():
+		print(text.blue)
+		print("[Debugging Information]")
+		print('Current Time: ' + time.asctime() + ' ' + time.strftime("%z", time.gmtime()))
+		print('Operating System: ' + sys.platform)
+		print('Python Version: ' + sys.version)
+		print(text.stop)
 
 class icons:
 	heart = '❤️ '
@@ -38,6 +52,8 @@ class icons:
 	speed = '🌀 '
 
 class user_class:
+	'''Create a player class'''
+
 	def __init__(self, name:str, basehp:int, basedef:int, basedmg:int, basespd:int, emoji:str):
 		self.name = name
 		self.basehp = basehp
@@ -47,27 +63,15 @@ class user_class:
 		self.emoji = emoji
 
 	def printstats(self):
-		print(color.purple + self.name + '\'s Stats - ' + self.emoji + color.stop)
-		print(icons.heart + ' Base HP: ' + color.cyanify(self.basehp))
-		print(icons.shield + ' Base Defense: ' + color.cyanify(self.basedef))
-		print(icons.sword + ' Base Damage: ' + color.cyanify(self.basedmg))
-		print(icons.speed + ' Base Attack Speed: ' + color.cyanify(self.basespd))
-
-class main:
-	inputtext = color.stop + color.bold + '> ' + color.stop
-	def up(amount: int = 1):
-		for i in range(0, amount):
-			sys.stdout.write("\033[F")
-
-	def debug():
-		print(color.blue)
-		print("[Debugging Information]")
-		print('Current Time: ' + time.asctime() + ' ' + time.strftime("%z", time.gmtime()))
-		print('Operating System: ' + sys.platform) 	# OS
-		print('Python Version: ' + sys.version)		# Python Version
-		print(color.stop)
+		print(text.purple + self.name + '\'s Stats - ' + self.emoji + text.stop)
+		print(icons.heart + ' Base HP: ' + text.cyanify(self.basehp))
+		print(icons.shield + ' Base Defense: ' + text.cyanify(self.basedef))
+		print(icons.sword + ' Base Damage: ' + text.cyanify(self.basedmg))
+		print(icons.speed + ' Base Attack Speed: ' + text.cyanify(self.basespd))
 
 class hero:
+	'''Make your player'''
+
 	def __init__(self, name:str=None, class_item:user_class=None):
 		self.name = name
 		self.c = class_item
@@ -95,16 +99,16 @@ default_shop_items = [
 	items.weaponry.projectile.arrow
 ]
 
-class other:
-	def __init__(self, coins:int=0):
-		self.money = coins
+class money:
+	'''Sloppy money management'''
+	coins = 0
 
 	def lose(self, amount:int):
-		self.money -= amount
+		money.coins -= amount
 
-		if self.money < 0:
-			self.money += amount
-			print(color.red + 'You can\'t afford this item!' + color.stop)
+		if money.coins < 0:
+			money.coins += amount
+			print(text.red + 'You can\'t afford this item!' + text.stop)
 
 			return(False)
 
@@ -112,14 +116,14 @@ class other:
 			return(True)
 
 	def gain(self, amount:int):
-		self.money += amount
+		money.coins += amount
 
 def merchant_talk(merchants:list, text:str):
-	print(color.dialog(random.choice(merchants)) + text)
-
-c = other()
+	print(text.dialog(random.choice(merchants)) + text)
 
 class shop:
+	'''Opens shops'''
+
 	def __init__(self,
 			name:str=None,
 			items:list=default_shop_items,
@@ -134,21 +138,21 @@ class shop:
 		self.tax = tax # Out of 100
 
 	def open(self, user:hero=None, money:int=None):
-		print(color.bold + color.underline + '\nWelcome to the ' + self.name + '!' + color.stop)
+		print(text.bold + text.underline + '\nWelcome to the ' + self.name + '!' + text.stop)
 
-		merchant_talk(self.merchants, ' Hello, ' + color.cyanify(user.name) + '! What would you like to buy today?')
+		merchant_talk(self.merchants, ' Hello, ' + text.cyanify(user.name) + '! What would you like to buy today?')
 
 		item_string = ''
 		for i in self.items:
-			item_string += color.cyanify(i.name) + ', '
+			item_string += text.cyanify(i.name) + ', '
 
 		item_string = item_string[:-2]
 		talking = True
 
 		while talking:
-			merchant_talk(self.merchants, ' We have the following items in stock: ' + item_string + color.greyify(' (Exit)'))
-			print(color.greyify('You have ') + color.cyanify(money) + color.greyify(' credits.'))
-			userInput = input(main.inputtext)
+			merchant_talk(self.merchants, ' We have the following items in stock: ' + item_string + text.greyify(' (Exit)'))
+			print(text.greyify('You have ') + text.cyanify(money) + text.greyify(' credits.'))
+			userInput = input(text.inputtext)
 
 			if userInput.lower() == 'exit':
 				if len(self.merchants) <= 1:
@@ -161,42 +165,41 @@ class shop:
 			else:
 				for i in self.items:
 					if userInput.lower() == i.name.lower():
-						merchant_talk(self.merchants, ' You\'d like to buy ' + color.cyanify(i.name) + '? It will cost you ' + color.cyanify(i.price) + ' credits. ' + color.greyify('(Y/N)'))
+						merchant_talk(self.merchants, ' You\'d like to buy ' + text.cyanify(i.name) + '? It will cost you ' + text.cyanify(i.price) + ' credits. ' + text.greyify('(Y/N)'))
 
-						userInput2 = input(main.inputtext)
+						userInput2 = input(text.inputtext)
 
 						if 'y' in userInput2.lower():
 							money -= i.price
 
 							if money < 0:
 								money += i.price
-								print(color.red + 'You can\'t afford ' + color.cyanify(i.name) + color.red + '!' + color.stop)
+								print(text.red + 'You can\'t afford ' + text.cyanify(i.name) + text.red + '!' + text.stop)
 
 							else:
-								merchant_talk(self.merchants, ' You bought 1 '  + color.cyanify(i.name) + '! Will that be all?')
+								merchant_talk(self.merchants, ' You bought 1 '  + text.cyanify(i.name) + '! Will that be all?')
 								inventory.append(i)
 
 						else:
 							merchant_talk(self.merchants, ' Okay...')
 
-
-
-
 class menu:
+	'''Manages menus'''
+
 	def __init__(self, user:hero):
 		self.user = user
 	
 	def open(self, location:str='Undefined', near:list=None, first:bool=False):
 		a = ''
 		for i in near:
-			a += color.cyanify(i.name) + ', '
+			a += text.cyanify(i.name) + ', '
 		
 		if first:
-			print(color.bold + color.underline + '\nWelcome to '  + color.cyanify(location) + color.bold + color.underline + ', ' + color.cyanify(self.user.name + ' the ' + self.user.c.name) + color.bold + color.underline + '!' + color.stop)
-			print('You can go into ' + a[:-2] + '. ' + color.greyify('(Save, Inventory, Purse)'))
+			print(text.bold + text.underline + '\nWelcome to '  + text.cyanify(location) + text.bold + text.underline + ', ' + text.cyanify(self.user.name + ' the ' + self.user.c.name) + text.bold + text.underline + '!' + text.stop)
+			print('You can go into ' + a[:-2] + '. ' + text.greyify('(Save, Inventory, Purse)'))
 
 		else:
-			print('\nYou are at ' + color.cyanify(location) + '. You can go into ' + a[:-2] + '. ' + color.greyify('(Save, Inventory, Purse)'))
+			print('\nYou are at ' + text.cyanify(location) + '. You can go into ' + a[:-2] + '. ' + text.greyify('(Save, Inventory, Purse)'))
 
 
 
@@ -234,7 +237,7 @@ ___<__(|) _   ""-/  / /   /
 	|\'''')
 
 
-main.debug()
+text.debug()
 
 
 class base_class:
@@ -246,12 +249,12 @@ class base_class:
 
 
 print('Choose your name.')
-userName = input(main.inputtext)
+userName = input(text.inputtext)
 
-main.up(2)
-print('Choose your name - ' + color.cyan + userName + color.stop)
-print('Choose your class ' + color.greyify('(Warrior, Wizard, Goblin, Ranger, Scout)'))
-userInput = input(main.inputtext)
+text.up(2)
+print('Choose your name - ' + text.cyan + userName + text.stop)
+print('Choose your class ' + text.greyify('(Warrior, Wizard, Goblin, Ranger, Scout)'))
+userInput = input(text.inputtext)
 
 user_classes = {
 	"warrior": hero(name=userName, class_item=base_class.warrior),
@@ -262,20 +265,18 @@ user_classes = {
 }
 
 character = user_classes[userInput.lower()]
-mainmenu = menu(user=character)
+textmenu = menu(user=character)
 
-main.up(2)
-print('Choose your class - ' + color.cyan + character.c.emoji + ' ' +character.c.name + color.stop + (' ' * 62))
+text.up(2)
+print('Choose your class - ' + text.cyan + character.c.emoji + ' ' +character.c.name + text.stop + (' ' * 62))
 
 character.c.printstats()
-c.money = 1000
+money.coins = 1000
 
 
 _town_store = shop(name="Town Store", merchants=["Merchant John"])
-# _town_store.open(character, money=c.money)
 
 clothing_item = [items.clothing.leather.jacket, items.clothing.leather.pants, items.clothing.leather.boots]
 _clothes_shop = shop(name="Clothes Shop", items=clothing_item, merchants=["Leather Worker", "Merchant Bob"])
-# _clothes_shop.open(character, money=c.money)
 
-mainmenu.open(location='Little Town', near=[_town_store, _clothes_shop], first=True)
+textmenu.open(location='Little Town', near=[_town_store, _clothes_shop], first=True)
